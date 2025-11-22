@@ -1,115 +1,109 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = [
-    { name: "Sobre Mí", href: "#about" },
-    { name: "Planes", href: "#plans" },
-    { name: "Testimonios", href: "#testimonials" },
-    { name: "Contacto", href: "#contact" },
+  const navLinks = [
+    { href: "#about", label: "Sobre Mí" },
+    { href: "#plans", label: "Planes" },
+    { href: "#testimonials", label: "Testimonios" },
+    { href: "#contact", label: "Contacto" },
   ];
-
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
-    }
-  };
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-background/80 backdrop-blur-lg border-b border-border" : "bg-transparent"
+      transition={{ duration: 0.6 }}
+      className={`fixed top-0 left-0 right-0 z-50 smooth-transition ${
+        isScrolled
+          ? "bg-deep-black/95 backdrop-blur-lg shadow-lg border-b border-pearl/10"
+          : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-2xl font-display font-bold"
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <motion.a
+            href="#"
+            className="text-2xl md:text-3xl font-display font-bold tracking-tight"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
           >
-            <span className="gradient-text">Sergio Arias</span>
-          </motion.div>
+            <span className="text-pearl">SERGIO</span>
+            <span className="gradient-text"> ARIAS</span>
+          </motion.a>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item, index) => (
-              <motion.button
-                key={item.name}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-2">
+            {navLinks.map((link, index) => (
+              <motion.a
+                key={link.href}
+                href={link.href}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index, duration: 0.5 }}
-                onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-primary smooth-transition-fast font-medium"
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="px-6 py-2 text-pearl/80 hover:text-pearl smooth-transition font-medium relative group"
               >
-                {item.name}
-              </motion.button>
+                {link.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full smooth-transition" />
+              </motion.a>
             ))}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
-              onClick={() => scrollToSection("#contact")}
-              className="bg-primary text-primary-foreground px-6 py-2 rounded-full hover:scale-105 smooth-transition-fast font-medium"
-            >
-              Empieza Hoy
-            </motion.button>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsOpen(!isOpen)}
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-pearl p-2 hover:bg-pearl/10 rounded-lg smooth-transition"
           >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </motion.button>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
-        {isOpen && (
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden mt-4 pb-4 space-y-4"
+            className="md:hidden bg-deep-black/98 backdrop-blur-lg border-t border-pearl/10 overflow-hidden"
           >
-            {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left text-foreground hover:text-primary smooth-transition-fast font-medium py-2"
-              >
-                {item.name}
-              </button>
-            ))}
-            <button
-              onClick={() => scrollToSection("#contact")}
-              className="w-full bg-primary text-primary-foreground px-6 py-2 rounded-full hover:scale-105 smooth-transition-fast font-medium"
-            >
-              Empieza Hoy
-            </button>
+            <div className="container mx-auto px-6 py-6 space-y-2">
+              {navLinks.map((link, index) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                >
+                  <a
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-3 text-pearl hover:bg-pearl/10 rounded-lg smooth-transition font-medium"
+                  >
+                    {link.label}
+                  </a>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </motion.nav>
   );
 };
