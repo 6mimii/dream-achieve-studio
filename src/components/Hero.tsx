@@ -1,113 +1,114 @@
-import { motion } from "framer-motion";
-import { Instagram } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { useRef } from "react";
 import heroImage from "@/assets/sergio-profile.jpg";
 
 const Hero = () => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-deep-black">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0">
-        <motion.div
-          initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.3 }}
-          transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
-          className="w-full h-full"
-        >
-          <img
-            src={heroImage}
-            alt="Sergio Arias"
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-deep-black/60 via-deep-black/80 to-deep-black" />
-      </div>
+    <motion.section 
+      ref={ref}
+      style={{ opacity, scale }}
+      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-black"
+    >
+      {/* Background Image with Parallax */}
+      <motion.div 
+        style={{ y }}
+        className="absolute inset-0 z-0"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-deep-black/50 via-deep-black/30 to-deep-black z-10" />
+        <img
+          src={heroImage}
+          alt="Sergio Arias - Personal Trainer"
+          className="w-full h-full object-cover"
+        />
+      </motion.div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center">
+      <div className="container mx-auto px-6 relative z-20 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 1, delay: 0.3 }}
         >
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-primary text-lg md:text-xl font-medium mb-4 tracking-wider uppercase"
-          >
-            Entrenador Personal
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+          <motion.h1 
+            className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-pearl mb-6 tracking-tight"
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-            className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-pearl mb-6"
+            transition={{ duration: 1, delay: 0.5 }}
           >
-            Sergio Arias
+            SERGIO
+            <br />
+            <span className="gradient-text">ARIAS</span>
           </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="mb-8"
-          >
-            <p className="text-2xl md:text-4xl font-display italic gradient-text">
-              Sueña y Logra
-            </p>
-          </motion.div>
-
           <motion.p
+            className="text-xl md:text-2xl lg:text-3xl text-pearl/80 mb-12 font-light tracking-wide"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="text-pearl/80 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
+            transition={{ duration: 1, delay: 0.8 }}
           >
-            Especialista en entrenamiento femenino. Transformando vidas a través del fitness personalizado.
+            Entrenador Personal Especializado
           </motion.p>
 
           <motion.div
+            className="flex flex-col md:flex-row gap-6 justify-center items-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            transition={{ duration: 1, delay: 1 }}
           >
             <a
               href="#contact"
-              className="bg-primary text-primary-foreground px-8 py-4 rounded-full hover:scale-105 smooth-transition font-medium text-lg"
+              className="group relative px-10 py-4 bg-primary text-primary-foreground rounded-full overflow-hidden font-medium text-lg tracking-wide hover:scale-105 smooth-transition"
             >
-              Comienza Tu Transformación
+              <span className="relative z-10">Empieza tu Transformación</span>
+              <div className="absolute inset-0 bg-primary/80 scale-x-0 group-hover:scale-x-100 smooth-transition origin-left" />
             </a>
+            
             <a
-              href="https://instagram.com/sergio_ariiaas"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border-2 border-pearl/30 text-pearl px-8 py-4 rounded-full hover:border-primary hover:text-primary smooth-transition font-medium text-lg flex items-center gap-2"
+              href="#about"
+              className="px-10 py-4 border-2 border-pearl/30 text-pearl rounded-full hover:bg-pearl/10 hover:border-pearl smooth-transition font-medium text-lg tracking-wide"
             >
-              <Instagram size={20} />
-              Sígueme
+              Conoce mi Método
             </a>
           </motion.div>
-        </motion.div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-        >
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-            className="w-6 h-10 border-2 border-pearl/30 rounded-full flex items-start justify-center p-2"
+            className="mt-20 italic text-2xl md:text-3xl gradient-text font-display font-semibold tracking-wide"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.2 }}
           >
-            <motion.div className="w-1.5 h-2 bg-primary rounded-full" />
+            Sueña y Logra
           </motion.div>
         </motion.div>
       </div>
-    </section>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 1,
+          delay: 1.5,
+          repeat: Infinity,
+          repeatType: "reverse",
+          repeatDelay: 0.5
+        }}
+      >
+        <ChevronDown className="text-pearl/50 w-8 h-8" />
+      </motion.div>
+    </motion.section>
   );
 };
 

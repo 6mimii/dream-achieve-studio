@@ -122,8 +122,8 @@ export default {
         "scale-in": "scale-in 0.6s ease-out",
       },
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
-        sans: ['Inter', 'sans-serif'],
+        display: ['Rajdhani', 'sans-serif'],
+        sans: ['Barlow', 'sans-serif'],
       },
     },
   },
