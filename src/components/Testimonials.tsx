@@ -2,9 +2,13 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { Quote } from "lucide-react";
-import transformation1 from "@/assets/transformation-1.jpg";
-import transformation2 from "@/assets/transformation-2.jpg";
-import transformation3 from "@/assets/transformation-3.jpg";
+import ImageComparisonSlider from "./ImageComparisonSlider";
+import before1 from "@/assets/before-1.jpg";
+import after1 from "@/assets/after-1.jpg";
+import before2 from "@/assets/before-2.jpg";
+import after2 from "@/assets/after-2.jpg";
+import before3 from "@/assets/before-3.jpg";
+import after3 from "@/assets/after-3.jpg";
 
 const Testimonials = () => {
   const ref = useRef(null);
@@ -16,7 +20,8 @@ const Testimonials = () => {
       role: "Cliente desde hace 2 años",
       text: "Sergio cambió completamente mi forma de entrenar. Por primera vez, un entrenador entiende mi cuerpo y adapta todo según mi ciclo. Los resultados han sido increíbles.",
       rating: 5,
-      image: transformation1,
+      beforeImage: before1,
+      afterImage: after1,
       timeframe: "6 meses"
     },
     {
@@ -24,7 +29,8 @@ const Testimonials = () => {
       role: "Transformación de 6 meses",
       text: "No solo perdí peso, gané confianza. El seguimiento semanal y la atención personalizada hacen toda la diferencia. Sergio siempre está ahí cuando lo necesitas.",
       rating: 5,
-      image: transformation2,
+      beforeImage: before2,
+      afterImage: after2,
       timeframe: "4 meses"
     },
     {
@@ -32,7 +38,8 @@ const Testimonials = () => {
       role: "Cliente desde hace 1 año",
       text: "Probé con muchos entrenadores antes, pero nadie como Sergio. Su conocimiento sobre entrenamiento femenino es excepcional. Recomendado 100%.",
       rating: 5,
-      image: transformation3,
+      beforeImage: before3,
+      afterImage: after3,
       timeframe: "8 meses"
     },
   ];
@@ -69,16 +76,15 @@ const Testimonials = () => {
               className="group relative"
             >
               <div className="bg-background rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl smooth-transition h-full border border-border/50 group-hover:border-primary/30">
-                {/* Before/After Image */}
-                <div className="relative h-64 overflow-hidden">
-                  <motion.img
-                    src={testimonial.image}
-                    alt={`Transformación de ${testimonial.name}`}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.4 }}
+                {/* Before/After Image Slider */}
+                <div className="relative p-6">
+                  <ImageComparisonSlider
+                    beforeImage={testimonial.beforeImage}
+                    afterImage={testimonial.afterImage}
+                    beforeAlt={`Antes - ${testimonial.name}`}
+                    afterAlt={`Después - ${testimonial.name}`}
                   />
-                  <div className="absolute top-4 right-4 bg-primary/90 backdrop-blur-sm px-4 py-2 rounded-full">
+                  <div className="absolute top-10 right-10 bg-primary/90 backdrop-blur-sm px-4 py-2 rounded-full z-10">
                     <span className="text-primary-foreground font-semibold text-sm">
                       {testimonial.timeframe}
                     </span>
