@@ -61,25 +61,23 @@ const Hero = () => {
           </motion.p>
 
           <motion.div
-            className="flex flex-col md:flex-row gap-6 justify-center items-center"
+            className="flex justify-center items-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1 }}
           >
-            <a
-              href="#contact"
+            <button
+              onClick={() => {
+                document.getElementById('contact')?.scrollIntoView({ 
+                  behavior: 'smooth',
+                  block: 'start'
+                });
+              }}
               className="group relative px-10 py-4 bg-primary text-primary-foreground rounded-full overflow-hidden font-medium text-lg tracking-wide hover:scale-105 smooth-transition"
             >
               <span className="relative z-10">Empieza tu Transformación</span>
               <div className="absolute inset-0 bg-primary/80 scale-x-0 group-hover:scale-x-100 smooth-transition origin-left" />
-            </a>
-            
-            <a
-              href="#about"
-              className="px-10 py-4 border-2 border-pearl/30 text-pearl rounded-full hover:bg-pearl/10 hover:border-pearl smooth-transition font-medium text-lg tracking-wide"
-            >
-              Conoce mi Método
-            </a>
+            </button>
           </motion.div>
 
           <motion.div

@@ -3,7 +3,6 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { Award, Users, Heart, TrendingUp } from "lucide-react";
 import trainingImage from "@/assets/sergio-training-1.jpg";
-import competitionImage from "@/assets/sergio-competition.jpg";
 
 const About = () => {
   const ref = useRef(null);
@@ -62,29 +61,15 @@ const About = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+            className="relative flex justify-center"
           >
-            <div className="relative">
-              <motion.img
-                src={trainingImage}
-                alt="Sergio Training"
-                className="rounded-3xl w-full shadow-2xl"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.4 }}
-              />
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="absolute -bottom-10 -right-10 w-64 h-64"
-              >
-                <img
-                  src={competitionImage}
-                  alt="Sergio Competition"
-                  className="rounded-3xl w-full h-full object-cover shadow-2xl border-4 border-pearl"
-                />
-              </motion.div>
-            </div>
+            <motion.img
+              src={trainingImage}
+              alt="Sergio Training"
+              className="rounded-3xl w-full max-w-md shadow-2xl"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.4 }}
+            />
           </motion.div>
 
           {/* Content */}
